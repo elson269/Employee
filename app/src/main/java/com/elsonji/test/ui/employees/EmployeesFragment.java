@@ -136,8 +136,6 @@ public class EmployeesFragment extends Fragment implements EmployeesAdapter.OnEm
                 reloadEmployeeList();
             }
 
-
-            //mSharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
             SharedPreferences.Editor editor = mSharedPref.edit();
             editor.putString(REFRESH_KEY, "");
             editor.apply();
@@ -149,7 +147,6 @@ public class EmployeesFragment extends Fragment implements EmployeesAdapter.OnEm
                 reloadEmployeeList();
             }
 
-           // mSharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
             SharedPreferences.Editor editor = mSharedPref.edit();
             editor.putString(UPDATE_KEY, "");
             editor.apply();

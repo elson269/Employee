@@ -78,7 +78,6 @@ public class EmployeesAdapter extends RecyclerView.Adapter<EmployeesAdapter.Empl
         mRole = mEmployeeList.get(i).getRole();
 
         if (hasPhoneNumberLocally(mFirstName, mLastName, mRole)) {
-            //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
             mPhoneNumber = mSharedPref.getString(EmployeeUid.getEmployeeUid(mFirstName, mLastName, mRole), "");
         }
 
@@ -114,7 +113,6 @@ public class EmployeesAdapter extends RecyclerView.Adapter<EmployeesAdapter.Empl
 
                                 @Override
                                 public void onComplete() {
-                                    //SharedPreferences refreshSharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
                                     SharedPreferences.Editor editor = mSharedPref.edit();
                                     editor.putString(EmployeeUid.getEmployeeUid(mFirstName, mLastName, mRole), "");
                                     editor.apply();
@@ -160,7 +158,6 @@ public class EmployeesAdapter extends RecyclerView.Adapter<EmployeesAdapter.Empl
     }
 
     private boolean hasPhoneNumberLocally(String firstName, String lastName, String role) {
-        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         String uid = EmployeeUid.getEmployeeUid(firstName, lastName, role);
         return mSharedPref.contains(uid);
     }

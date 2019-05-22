@@ -97,7 +97,6 @@ public class UpdateActivity extends AppCompatActivity {
         mRoleTextView.setText(mRole);
 
         if (hasPhoneNumberLocally(mFirstName, mLastName, mRole)) {
-            //mSharedPref = PreferenceManager.getDefaultSharedPreferences(getApplication());
             mPhoneNumber = mSharedPref.getString(EmployeeUid.getEmployeeUid(mFirstName, mLastName, mRole), "error");
             mPhoneEditTextView.setText(mPhoneNumber);
         }
@@ -105,7 +104,6 @@ public class UpdateActivity extends AppCompatActivity {
     }
 
     private boolean hasPhoneNumberLocally(String firstName, String lastName, String role) {
-        //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplication());
         String uid = EmployeeUid.getEmployeeUid(firstName, lastName, role);
         return mSharedPref.contains(uid);
     }
@@ -113,7 +111,6 @@ public class UpdateActivity extends AppCompatActivity {
     private void addPhoneNumberLocally(String phoneNumber, String firstName, String lastName, String role,
                                        String id, String token, Employee employee) {
         if (PhoneValidator.isPhoneNumberValid(phoneNumber)) {
-            //SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             SharedPreferences.Editor phoneEditor = mSharedPref.edit();
             mEmployeeUid = EmployeeUid.getEmployeeUid(firstName, lastName, role);
             phoneEditor.putString(mEmployeeUid, phoneNumber);
@@ -168,7 +165,6 @@ public class UpdateActivity extends AppCompatActivity {
                     @Override
                     public void onComplete() {
                         Toast.makeText(getApplication(), "Successful.", Toast.LENGTH_SHORT).show();
-                        //SharedPreferences refreshSharedPref = PreferenceManager.getDefaultSharedPreferences(getApplication());
                         SharedPreferences.Editor editor = mSharedPref.edit();
                         editor.putString(UPDATE_KEY, "update");
                         editor.apply();
