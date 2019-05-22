@@ -1,0 +1,187 @@
+#%RAML 1.0
+---
+title: Employee API
+baseUri: http://api.example.com
+
+types:
+  employee: |
+    {
+      "type": "object",
+      "$schema": "http://json-schema.org/draft-03/schema",
+      "id": "http://jsonschema.net",
+      "required": true,
+      "properties": {
+        "firstName": {
+          "type": "string",
+          "required": true
+        },
+        "lastName": {
+          "type": "string",
+          "required": true
+        },
+        "role": {
+          "type": "string",
+          "required": true
+        }
+      }
+    }
+
+traits:
+  hasHeaders:
+    headers:
+      Authorization:
+        displayName: Authorization
+        description: JWT
+        type: string
+        required: true
+
+/users:
+  /signin:
+    description: User login.
+    post:
+      is: [hasHeaders]
+      body:
+        application/json:
+          properties:
+            username:
+              description: Username of the user for whom to create a token.
+              required: true
+              type: string
+            password:
+              description: The user's password.
+              required: true
+              type: string
+      responses:
+        200:
+          body:
+            application/json:
+              properties:
+                jwt:
+                  description: The json web authorization token.
+                  required: true
+                  type: string
+              example: |
+                {
+                  "jwt": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImF1dGgiOlt7ImF1dGhvcml0eSI6IlJPTEVfQURNSU4ifV0sImlhdCI6MTU1NjY0NDY0NiwiZXhwIjoxNTU2NjQ4MjQ2fQ.ZBR9NybpLecbq6uoc8k4QYCygGxFnDV7W90joqvq03c"
+                }
+
+/employees:
+  description: Access employee information.
+  get:
+    is: [hasHeaders]
+    description: Get a list of all employees.
+    responses:
+      200:
+        body:
+          application/json:
+            example: |
+              [
+                {
+                    "id": 1,
+                    "firstName": "Jack",
+                    "lastName": "Bauer",
+                    "role": "Secret Agent"
+                },
+                {
+                    "id": 2,
+                    "firstName": "Chloe",
+                    "lastName": "O'Brian",
+                    "role": "CEO"
+                },
+                {
+                    "id": 3,
+                    "firstName": "Kim",
+                    "lastName": "Bauer",
+                    "role": "Secret Agent"
+                }
+              ]
+  post:
+    is: [hasHeaders]
+    description: Create a new employee.
+    body:
+      application/json:
+        type: employee
+    responses:
+      201: #Created
+        body:
+          application/json:
+            example: |
+              {
+                "id": 5,
+                "firstName": "Michelle",
+                "lastName": "Dessler",
+                "role": "Accountant"
+              }
+      403:
+        body:
+          application/json:
+            example: |
+              {
+                "timestamp": "2019-04-30T21:36:39.441+0000",
+                "status": 403,
+                "error": "Forbidden",
+                "message": "Access denied",
+                "path": "/api/employees"
+              }
+  /{id}:
+    get:
+      is: [hasHeaders]
+      description: Get a single employee's info.
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 5,
+                  "firstName": "Michelle",
+                  "lastName": "Dessler",
+                  "role": "Accountant"
+                }
+    put:
+      is: [hasHeaders]
+      description: Change an employee's info.
+      body:
+        application/json:
+          type: employee
+        application/x-www-form-urlencoded:
+          properties:
+            firstName:
+              description: Employee's first name.
+              required: true
+              type: string
+            lastName:
+              description: Employee's last name.
+              required: true
+              type: string
+            role:
+              description: Employee's role in the company.
+              required: true
+              type: string
+      responses:
+        200:
+          body:
+            application/json:
+              example: |
+                {
+                  "id": 5,
+                  "firstName": "Michelle",
+                  "lastName": "Dessler",
+                  "role": "Senior Accountant"
+                }
+        403:
+          body:
+            application/json:
+              example: |
+                {
+                  "timestamp": "2019-04-30T21:36:39.441+0000",
+                  "status": 403,
+                  "error": "Forbidden",
+                  "message": "Access denied",
+                  "path": "/api/employees"
+                }
+    delete:
+      is: [hasHeaders]
+      description: Delete an employee.
+      responses:
+        200:
